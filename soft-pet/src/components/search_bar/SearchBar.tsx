@@ -18,14 +18,14 @@ export function SearchBar() {
     </div>
     <input
       type="search"
-      className="block w-full p-3 ps-10 text-gray-900 border-3 border-[var(--gray)] rounded-lg focus:border-[var(--gray)] focus:ring-0"
+      className="block w-full p-3 ps-10 text-[var(--light)] border-3 border-[var(--gray)] rounded-lg focus:border-[var(--gray)] focus:ring-0"
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       required
     />
     <button
       type="submit"
-      className="bg-[var(--gray)] text-[var(--light)] absolute top-1/2 right-1.5 transform -translate-y-1/2 focus:ring-4 focus:ring-black font-bold rounded-lg text-sm p-2 px-3"
+      className="bg-[var(--gray)] text-[var(--light)] absolute top-1/2 right-1.5 transform -translate-y-1/2 focus:ring-2 focus:ring-[var(--light)] font-bold rounded-lg text-sm p-2 px-3"
     >
       Pesquisar
     </button>
