@@ -20,5 +20,5 @@ body {
   background-attachment: fixed;
   color: var(--foreground);
   font-family: "Ubuntu", sans-serif;
-  padding: 20px;
+  padding: 0 50px 0 50px;
 }

@@ -9,7 +9,7 @@ export function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full ml-12">
+    <form onSubmit={handleSubmit} className="flex w-full">
       <div className="relative w-full">
         <div className="bg-[var(--gray)] absolute inset-y-0 flex items-center p-3 rounded-l-lg">
           <svg className="w-4 h-4 text-[var(--color_1)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
