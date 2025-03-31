@@ -1,0 +1,14 @@
+/* Estilos gerais do card */
+.div-hover:hover {
+  border: 3px solid var(--color_3);
+  /* A borda muda para var(--gradiente_2) no hover */
+}
+
+/* Aplica a borda quando a modal está aberta */
+.div-hover.border-visible {
+  border: 3px solid var(--color_3);
+}
+
+.modal-visible {
+  border: 3px solid var(--color_3);
+}
