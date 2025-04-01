@@ -14,11 +14,11 @@ generator client {
 }
 
 model Pet {
-  id        String   @id @default(cuid())
+  id        Int     @id @default(autoincrement())
   nome      String
   nomeDono  String
   telefone  String
   animal    String
-  nascimento String
+  nascimento String?
   raca      String
 }
