@@ -47,7 +47,7 @@ export function Card({ pet }: CardProps) {
           </p>
         </div>
         <button
-           onClick={() => setIsModalOpen(!isModalOpen)}
+          onClick={() => setIsModalOpen(!isModalOpen)}
           className="ml-auto my-1"
         >
           SVG aqui
@@ -61,21 +61,21 @@ export function Card({ pet }: CardProps) {
           <p>Telefone:{telefone}</p>
           <p>Nascimento: {nascimento}</p>
 
-          <div className="m-2 justify-center">
-          <button
-          className="text-[var(--light)] transform focus:ring-2 focus:[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 mx-3"
-          style={{ background: "var(--gradient_2)" }}
-        >
-            editar
-          </button>
+          <div className="m-2 justify-center w-full">
+            <button
+              className="justify-center text-[var(--color_2)] bg-[var(--light)] focus:ring-2 focus:ring-[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 w-full"
+            >
+              editar
+            </button>
 
-          <button
-          className="text-[var(--light)] transform focus:ring-2 focus:[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 mx-3"
-          style={{ background: "var(--gradient_2)" }}
-        >
-            remover
-          </button>
+            <button
+              className="justify-center text-[var(--light)] focus:ring-2 focus:ring-[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 w-full mt-3"
+              style={{ background: "var(--gradient_2)" }}
+            >
+              remover
+            </button>
           </div>
+
         </div>
       )}
     </div>
