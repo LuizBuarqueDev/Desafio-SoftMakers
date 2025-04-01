@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "@/components/card/Card";
 import { Header } from "@/components/header/Header";
 import RegisterPetModal from "@/components/modal/RegisterPetModal";
+import RemovePetModal from "@/components/modal/RemovePetModal"; // Importar o modal de remoção
 import { SearchBar } from "@/components/search_bar/SearchBar";
 import { Pet } from "@/types/Pet";
 
@@ -35,18 +36,28 @@ const pets = [
 ];
 
 export default function Home() {
-  // Estado para controlar a visibilidade do modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false); // Para controlar a exibição do modal de remoção
+  const [petToRemove, setPetToRemove] = useState<Pet | null>(null); // Guardar o pet que será removido
 
-  // Função para fechar o modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleCloseRemoveModal = () => setIsRemoveModalOpen(false); // Função para fechar o modal de remoção
 
-  // Função para salvar os dados do pet
   const handleSavePet = (pet: Pet) => {
     console.log("Pet cadastrado:", pet);
-    setIsModalOpen(false); // Fechar o modal após salvar
+    setIsModalOpen(false); // Fechar o modal de cadastro após salvar
+  };
+
+  const handleRemovePet = (pet: Pet) => {
+    setPetToRemove(pet); // Guardar o pet a ser removido
+    setIsRemoveModalOpen(true); // Abre o modal de remoção
+  };
+
+  const handlePetRemove = () => {
+    if (petToRemove) {
+      console.log(`Pet ${petToRemove.nome} removido`); // Aqui você pode adicionar a lógica para remover o pet da lista
+    }
+    setIsRemoveModalOpen(false); // Fechar o modal após a remoção
   };
 
   return (
@@ -60,7 +71,7 @@ export default function Home() {
         <button
           className="text-[var(--light)] transform focus:ring-2 focus:[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 mx-3"
           style={{ background: "var(--gradient_2)" }}
-          onClick={() => setIsModalOpen(true)} // Abre o modal ao clicar
+          onClick={() => setIsModalOpen(true)} // Abre o modal de cadastro ao clicar
         >
           <svg
             className="w-[25px] h-[25px] text-gray-800 dark:text-white"
@@ -85,7 +96,7 @@ export default function Home() {
 
       <div className="flex gap-4">
         {pets.map((pet, index) => (
-          <Card key={index} pet={pet} />
+          <Card key={index} pet={pet}/>
         ))}
       </div>
 

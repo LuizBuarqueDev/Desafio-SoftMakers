@@ -2,7 +2,7 @@ export interface Pet {
     nome: string;
     nomeDono: string;
     telefone: string;
-    animal: 'Cachorro' | 'Gato';
+    animal: string;
     nascimento: string;
     raca: string;
   }
