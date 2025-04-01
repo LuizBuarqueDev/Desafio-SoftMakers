@@ -3,8 +3,8 @@
 import "./styles.css";
 import { useState } from "react";
 import { Pet } from "@/types/Pet";
-import EditPetModal from "@/components/modal/EditPetModal"; // Importando o modal de edição
-import RemovePetModal from "@/components/modal/RemovePetModal"; // Modal de remoção
+import EditPetModal from "@/components/modal/EditPetModal";
+import RemovePetModal from "@/components/modal/RemovePetModal";
 
 interface CardProps {
   pet: Pet;
@@ -16,33 +16,27 @@ export function Card({ pet }: CardProps) {
   // Estados para controlar os modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para controlar o modal de edição
-
-  // Função para abrir o modal de remoção
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleRemoveClick = () => {
     setIsRemoveModalOpen(true);
-    setIsModalOpen(false); // Fecha o modal de visualização
+    setIsModalOpen(false);
   };
 
-  // Função para fechar o modal de remoção
   const handleCloseRemoveModal = () => setIsRemoveModalOpen(false);
 
-  // Função para realizar a remoção do pet
   const handlePetRemove = () => {
     console.log(`Pet ${pet.nome} removido`);
-    setIsRemoveModalOpen(false); // Fecha o modal de remoção após confirmar
+    setIsRemoveModalOpen(false);
   };
 
-  // Função para abrir o modal de edição
   const handleEditModalOpen = () => setIsEditModalOpen(true);
 
-  // Função para fechar o modal de edição
   const handleCloseEditModal = () => setIsEditModalOpen(false);
 
   // Função para salvar as edições
   const handleSavePet = (editedPet: Pet) => {
     console.log("Pet editado:", editedPet);
-    setIsEditModalOpen(false); // Fecha o modal de edição após salvar
+    setIsEditModalOpen(false); 
   };
 
   return (
@@ -84,14 +78,14 @@ export function Card({ pet }: CardProps) {
 
           <div className="m-2 justify-center w-full">
             <button
-              onClick={handleEditModalOpen} // Abre o modal de edição
+              onClick={handleEditModalOpen}
               className="justify-center text-[var(--color_2)] bg-[var(--light)] focus:ring-2 focus:ring-[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 w-full"
             >
               Editar
             </button>
 
             <button
-              onClick={handleRemoveClick} // Aciona o modal de remoção
+              onClick={handleRemoveClick}
               className="justify-center text-[var(--light)] focus:ring-2 focus:ring-[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 w-full mt-3"
               style={{ background: "var(--gradient_2)" }}
             >

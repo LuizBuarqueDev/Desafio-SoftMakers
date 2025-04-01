@@ -1,3 +1,4 @@
+import PetService from '@/services/PetService';
 import { Pet } from '@/types/Pet';
 import React, { useState } from 'react';
 
@@ -34,8 +35,13 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
     }));
   };
 
-  const handleSave = () => {
-    onSave(pet); // Chama a função para salvar o pet
+  const handleSave = async () => {
+    try {
+      const savedPet = await PetService.createPet(pet); // Cria o pet
+      onSave(savedPet); // Passa o pet salvo para o callback onSave
+    } catch (error) {
+      console.error('Erro ao salvar pet:', error);
+    }
   };
 
   return (
