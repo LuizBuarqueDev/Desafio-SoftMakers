@@ -39,21 +39,14 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
 
   const handleSave = async () => {
     try {
-      // Limpa o telefone para remover caracteres não numéricos
-      const cleanedPhone = pet.telefone.replace(/\D/g, ''); // Remove tudo que não seja número
-
-      // Formata a data de nascimento para o formato ISO (yyyy-MM-dd)
+      const cleanedPhone = pet.telefone.replace(/\D/g, '');
       const formattedDate = pet.nascimento ? format(new Date(pet.nascimento), 'yyyy-MM-dd') : '';
-
-      // Atualiza o objeto pet com os dados limpos e formatados
       const formattedPet = {
         ...pet,
         telefone: cleanedPhone,
         nascimento: formattedDate,
       };
-
-      console.log("Dados enviados para a API:", formattedPet);
-      onSave(formattedPet); // Chama o callback onSave com o pet formatado
+      onSave(formattedPet);
     } catch (error) {
       console.error('Erro ao salvar pet:', error);
     }
