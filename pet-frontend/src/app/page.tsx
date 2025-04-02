@@ -31,10 +31,16 @@ export default function Home() {
   const handleCloseModal = () => setIsModalOpen(false);
 
   // Função para salvar um pet e atualizar a lista de pets
-  const handleSavePet = (pet: Pet) => {
-    console.log("Pet cadastrado:", pet);
-    setIsModalOpen(false); // Fechar o modal de cadastro após salvar
-    fetchPets(); // Recarregar os pets da API após salvar
+  const handleSavePet = async (pet: Pet) => {
+    console.log("Dados enviados para a API:", pet);
+    try {
+      console.log("Pet cadastrado:", pet);
+      const savedPet = await PetService.createPet(pet); // Cria o pet
+      setIsModalOpen(false); // Fecha o modal de cadastro após salvar
+      fetchPets(); // Atualiza a lista de pets após o cadastro
+    } catch (error) {
+      console.error('Erro ao salvar pet:', error);
+    }
   };
 
   return (

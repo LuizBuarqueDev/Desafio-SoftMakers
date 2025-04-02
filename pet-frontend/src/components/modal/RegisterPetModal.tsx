@@ -1,6 +1,8 @@
-import PetService from '@/services/PetService';
-import { Pet } from '@/types/Pet';
-import React, { useState } from 'react';
+"use client";
+
+import { useState } from "react";
+import { Pet } from "@/types/Pet";
+import { format } from "date-fns";
 
 type Props = {
   onClose: () => void;
@@ -23,7 +25,7 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
 
     // Atualizando o estado com base no valor anterior
     setPet((prevState) => ({
-      ...prevState, // Espalhando o estado anterior
+      ...prevState,
       [name]: value, // Atualizando o campo específico
     }));
   };
@@ -37,8 +39,21 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
 
   const handleSave = async () => {
     try {
-      const savedPet = await PetService.createPet(pet); // Cria o pet
-      onSave(savedPet); // Passa o pet salvo para o callback onSave
+      // Limpa o telefone para remover caracteres não numéricos
+      const cleanedPhone = pet.telefone.replace(/\D/g, ''); // Remove tudo que não seja número
+
+      // Formata a data de nascimento para o formato ISO (yyyy-MM-dd)
+      const formattedDate = pet.nascimento ? format(new Date(pet.nascimento), 'yyyy-MM-dd') : '';
+
+      // Atualiza o objeto pet com os dados limpos e formatados
+      const formattedPet = {
+        ...pet,
+        telefone: cleanedPhone,
+        nascimento: formattedDate,
+      };
+
+      console.log("Dados enviados para a API:", formattedPet);
+      onSave(formattedPet); // Chama o callback onSave com o pet formatado
     } catch (error) {
       console.error('Erro ao salvar pet:', error);
     }
@@ -47,11 +62,12 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
       <div className="text-white rounded-2xl p-6 w-full max-w-md shadow-lg border border-[var(--color_2)]"
-      style={{background: "var(--gradient_1"}}>
+        style={{ background: "var(--gradient_1)" }}>
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="bg-[var(--color_2)]p-3 rounded-full">
+            <div className="bg-[var(--color_2)] p-3 rounded-full">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22" />
               </svg>
@@ -151,7 +167,7 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
           <button
             onClick={handleSave}
             className=" text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2"
-            style={{background: "var(--gradient_2"}}
+            style={{ background: "var(--gradient_2" }}
           >
             + Cadastrar
           </button>
