@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { CreatePet } from "@/types/CreatePet";
-import PetService from "@/services/PetService";
+import { Pet } from "@/types/Pet";
 
 type Props = {
   onClose: () => void;
-  onSave: (pet: CreatePet) => void;
-  pet: CreatePet;
+  onSave: (pet: Pet) => void;
+  pet: Pet;
 };
 
 const EditPetModal: React.FC<Props> = ({ onClose, onSave, pet }) => {
-  const [editedPet, setEditedPet] = useState<CreatePet>(pet);
+  const [editedPet, setEditedPet] = useState<Pet>(pet);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

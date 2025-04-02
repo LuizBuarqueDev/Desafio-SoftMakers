@@ -11,82 +11,99 @@ import { CreatePet } from "@/types/CreatePet";
 
 export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
+  const [filteredPets, setFilteredPets] = useState<Pet[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16;
 
-  // Função para buscar os pets da API
+  useEffect(() => {
+    fetchPets();
+  }, []);
+
   const fetchPets = async () => {
     try {
       const petsData = await PetService.getPets();
       setPets(petsData);
+      setFilteredPets(petsData);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     }
   };
 
-  // Chama a função fetchPets quando o componente for montado
-  useEffect(() => {
-    fetchPets();
-  }, []);
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (!query) {
+      setFilteredPets(pets);
+      return;
+    }
+    const filtered = pets.filter((pet) =>
+      pet.nome.toLowerCase().includes(query.toLowerCase()) ||
+      pet.nomeDono.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredPets(filtered);
+  };
 
-  // Função para fechar o modal
   const handleCloseModal = () => setIsModalOpen(false);
 
-  // Função para salvar um pet e atualizar a lista de pets
   const handleSavePet = async (pet: CreatePet) => {
-    console.log("Dados enviados para a API:", pet);
-    const savedPet = await PetService.createPet(pet);
-
-    console.log("Pet cadastrado:", savedPet);
-    setIsModalOpen(false);
-    fetchPets();
+    try {
+      const savedPet = await PetService.createPet(pet);
+      setIsModalOpen(false);
+      fetchPets();
+    } catch (error) {
+      console.error("Erro ao cadastrar pet:", error);
+    }
   };
+
+  const totalPages = Math.ceil(filteredPets.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPets = filteredPets.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <main>
       <Header />
       <div className="flex justify-between relative w-full mb-8">
         <div className="flex flex-grow">
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
         </div>
-
         <button
           className="text-[var(--light)] transform focus:ring-2 focus:[var(--light)] font-bold rounded-lg flex items-center gap-2 text-sm p-2 px-3 mx-3"
           style={{ background: "var(--gradient_2)" }}
-          onClick={() => setIsModalOpen(true)} // Abre o modal de cadastro ao clicar
+          onClick={() => setIsModalOpen(true)}
         >
-          <svg
-            className="w-[25px] h-[25px] text-gray-800 dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
           Cadastrar
         </button>
       </div>
-
-      <div className="flex gap-4">
-        {pets.map((pet, index) => (
-          <Card key={index} pet={pet} />
+      <div className="flex flex-wrap gap-4 justify-center">
+        {currentPets.map((pet) => (
+          <Card key={pet.id} pet={pet} />
         ))}
       </div>
 
-      {/* Modal de Cadastro de Pet */}
+      {/* Pag */}
+      <div className="flex justify-end mt-4 w-full pr-4">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-2 mx-1 bg-gray-200 rounded disabled:opacity-50"
+        >
+          ←
+        </button>
+        <span className="px-4 py-2">
+          {currentPage} de {totalPages}
+        </span>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 mx-1 bg-gray-200 rounded disabled:opacity-50"
+        >
+          →
+        </button>
+      </div>
       {isModalOpen && (
-        <RegisterPetModal
-          onClose={handleCloseModal}
-          onSave={handleSavePet}
-        />
+        <RegisterPetModal onClose={handleCloseModal} onSave={handleSavePet} />
       )}
     </main>
   );

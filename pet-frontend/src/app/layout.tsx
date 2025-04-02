@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Soft-Pet",
-  description: "Sistema de gerenciamaento ",
+  description: "Sistema de gerenciamento de pets",
 };
 
 export default function RootLayout({

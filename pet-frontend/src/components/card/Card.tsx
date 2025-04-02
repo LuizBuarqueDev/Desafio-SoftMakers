@@ -26,12 +26,11 @@ export function Card({ pet }: CardProps) {
 
   const handleCloseRemoveModal = () => setIsRemoveModalOpen(false);
 
-  // Função para remover o pet via PetService
   const handlePetRemove = async () => {
     try {
-      await PetService.removePet(pet.id); // Chama o método de remoção do PetService
+      await PetService.removePet(pet.id);
       console.log(`Pet ${pet.nome} removido com sucesso.`);
-      setIsRemoveModalOpen(false); // Fecha o modal de remoção
+      setIsRemoveModalOpen(false);
     } catch (error) {
       console.error('Erro ao remover pet:', error);
     }
@@ -41,22 +40,22 @@ export function Card({ pet }: CardProps) {
 
   const handleCloseEditModal = () => setIsEditModalOpen(false);
 
-  // Função para salvar as edições do pet via PetService
   const handleSavePet = async (editedPet: Pet) => {
     try {
-      const updatedPet = await PetService.updatePet(editedPet.id, editedPet); // Chama o método de atualização do PetService
+      const updatedPet = await PetService.updatePet(editedPet.id, editedPet);
       console.log("Pet editado com sucesso:", updatedPet);
-      setIsEditModalOpen(false); // Fecha o modal de edição
+      setIsEditModalOpen(false);
     } catch (error) {
       console.error('Erro ao editar pet:', error);
     }
   };
 
+  const petImage = animal.toLowerCase() === "cachorro" ? "/dog.png" : "/cat.png";
+
   return (
     <div className="relative">
-      {/* Card Principal */}
       <div
-        className={`flex items-center p-4 shadow-md rounded-lg w-[300px] h-[95px] div-hover ${isModalOpen ? 'border-visible' : ''}`}
+        className={`flex items-center p-4 shadow-md rounded-lg w-[350px] h-[90px] div-hover ${isModalOpen ? 'border-visible' : ''}`}
         style={{ background: "var(--gradient_1)" }}
       >
         <div
@@ -64,7 +63,7 @@ export function Card({ pet }: CardProps) {
           style={{ background: "var(--gradient_2)" }}
         >
           <img
-            src="/cat.png"
+            src={petImage}
             alt="Foto do Pet"
             className="w-[45px] h-[45px] object-contain"
           />
@@ -77,14 +76,13 @@ export function Card({ pet }: CardProps) {
           onClick={() => setIsModalOpen(!isModalOpen)}
           className="ml-auto my-1"
         >
-          {/* Botão de visualização do modal */}
           Botão
         </button>
       </div>
 
-      {/* Modal de visualização do Pet */}
       {isModalOpen && (
-        <div className="modal-visible text-[var(--light)] absolute top-full mt-2 left-0 p-6 rounded-lg shadow-lg w-[300px] z-10 border-2">
+        <div className="modal-visible text-[var(--light)] absolute top-full mt-2 left-0 p-6 rounded-lg shadow-lg w-[350px] z-10 border-2 "
+        style={{background: "var(--gradient_1)"}}>
           <p>Raça: {raca}</p>
           <p>Telefone: {telefone}</p>
           <p>Nascimento: {nascimento}</p>
@@ -108,7 +106,6 @@ export function Card({ pet }: CardProps) {
         </div>
       )}
 
-      {/* Modal de remoção de Pet */}
       {isRemoveModalOpen && (
         <RemovePetModal
           onClose={handleCloseRemoveModal}
@@ -117,7 +114,6 @@ export function Card({ pet }: CardProps) {
         />
       )}
 
-      {/* Modal de Edição de Pet */}
       {isEditModalOpen && (
         <EditPetModal
           onClose={handleCloseEditModal}
