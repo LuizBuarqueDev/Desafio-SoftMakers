@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Pet } from '@/types/Pet';
 
-const API_URL = 'http://localhost:3000/pets';
+const API_URL = 'http://localhost:3001/pets';
 
 class PetService {
   

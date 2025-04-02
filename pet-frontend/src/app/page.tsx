@@ -1,63 +1,40 @@
-'use client';
+"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/card/Card";
 import { Header } from "@/components/header/Header";
 import RegisterPetModal from "@/components/modal/RegisterPetModal";
-import RemovePetModal from "@/components/modal/RemovePetModal"; // Importar o modal de remoção
 import { SearchBar } from "@/components/search_bar/SearchBar";
+import PetService from "@/services/PetService";
 import { Pet } from "@/types/Pet";
 
-const pets = [
-  {
-    nome: "Simba Farias",
-    nomeDono: "Maria Oliveira",
-    telefone: "(11) 98765-4321",
-    animal: "Cachorro",
-    nascimento: "01/01/2020",
-    raca: "Labrador"
-  },
-  {
-    nome: "Simba Farias",
-    nomeDono: "João Silva",
-    telefone: "(21) 98876-5432",
-    animal: "Gato",
-    nascimento: "15/03/2021",
-    raca: "Persa"
-  },
-  {
-    nome: "Simba Farias",
-    nomeDono: "Ana Souza",
-    telefone: "(31) 98765-1234",
-    animal: "Coelho",
-    nascimento: "22/08/2019",
-    raca: "Mini Rex"
-  }
-];
-
 export default function Home() {
+  const [pets, setPets] = useState<Pet[]>([]); // Estado para armazenar a lista de pets
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false); // Para controlar a exibição do modal de remoção
-  const [petToRemove, setPetToRemove] = useState<Pet | null>(null); // Guardar o pet que será removido
 
+  // Função para buscar os pets da API
+  const fetchPets = async () => {
+    try {
+      const petsData = await PetService.getPets(); // Usando o serviço para buscar os pets
+      setPets(petsData); // Atualizando o estado com os pets retornados pela API
+    } catch (error) {
+      console.error("Erro ao buscar pets:", error);
+    }
+  };
+
+  // Chama a função fetchPets quando o componente for montado
+  useEffect(() => {
+    fetchPets();
+  }, []);
+
+  // Função para fechar o modal
   const handleCloseModal = () => setIsModalOpen(false);
-  const handleCloseRemoveModal = () => setIsRemoveModalOpen(false); // Função para fechar o modal de remoção
 
+  // Função para salvar um pet e atualizar a lista de pets
   const handleSavePet = (pet: Pet) => {
     console.log("Pet cadastrado:", pet);
     setIsModalOpen(false); // Fechar o modal de cadastro após salvar
-  };
-
-  const handleRemovePet = (pet: Pet) => {
-    setPetToRemove(pet); // Guardar o pet a ser removido
-    setIsRemoveModalOpen(true); // Abre o modal de remoção
-  };
-
-  const handlePetRemove = () => {
-    if (petToRemove) {
-      console.log(`Pet ${petToRemove.nome} removido`); // Aqui você pode adicionar a lógica para remover o pet da lista
-    }
-    setIsRemoveModalOpen(false); // Fechar o modal após a remoção
+    fetchPets(); // Recarregar os pets da API após salvar
   };
 
   return (
@@ -96,7 +73,7 @@ export default function Home() {
 
       <div className="flex gap-4">
         {pets.map((pet, index) => (
-          <Card key={index} pet={pet}/>
+          <Card key={index} pet={pet} />
         ))}
       </div>
 

@@ -11,6 +11,12 @@ async function bootstrap() {
     whitelist: true,  // Remove propriedades não declaradas no DTO
   }));
 
-  await app.listen(3000);
+  app.enableCors({
+    origin: 'http://localhost:3000', // Permite requisições do frontend na porta 3000
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Authorization', // Permite esses cabeçalhos
+  });
+
+  await app.listen(3001);
 }
 bootstrap();
