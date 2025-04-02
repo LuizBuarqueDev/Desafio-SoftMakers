@@ -7,16 +7,17 @@ import RegisterPetModal from "@/components/modal/RegisterPetModal";
 import { SearchBar } from "@/components/search_bar/SearchBar";
 import PetService from "@/services/PetService";
 import { Pet } from "@/types/Pet";
+import { CreatePet } from "@/types/CreatePet";
 
 export default function Home() {
-  const [pets, setPets] = useState<Pet[]>([]); // Estado para armazenar a lista de pets
+  const [pets, setPets] = useState<Pet[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Função para buscar os pets da API
   const fetchPets = async () => {
     try {
-      const petsData = await PetService.getPets(); // Usando o serviço para buscar os pets
-      setPets(petsData); // Atualizando o estado com os pets retornados pela API
+      const petsData = await PetService.getPets();
+      setPets(petsData);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     }
@@ -31,16 +32,13 @@ export default function Home() {
   const handleCloseModal = () => setIsModalOpen(false);
 
   // Função para salvar um pet e atualizar a lista de pets
-  const handleSavePet = async (pet: Pet) => {
+  const handleSavePet = async (pet: CreatePet) => {
     console.log("Dados enviados para a API:", pet);
-    try {
-      console.log("Pet cadastrado:", pet);
-      const savedPet = await PetService.createPet(pet); // Cria o pet
-      setIsModalOpen(false); // Fecha o modal de cadastro após salvar
-      fetchPets(); // Atualiza a lista de pets após o cadastro
-    } catch (error) {
-      console.error('Erro ao salvar pet:', error);
-    }
+    const savedPet = await PetService.createPet(pet);
+
+    console.log("Pet cadastrado:", savedPet);
+    setIsModalOpen(false);
+    fetchPets();
   };
 
   return (

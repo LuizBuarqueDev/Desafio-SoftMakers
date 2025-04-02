@@ -1,5 +1,4 @@
-export interface Pet {
-  id: string;
+export interface CreatePet {
   nome: string;
   nomeDono: string;
   telefone: string;

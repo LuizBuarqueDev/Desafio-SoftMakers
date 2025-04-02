@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { Pet } from '@/types/Pet';
+import { CreatePet } from '@/types/CreatePet';
 
 const API_URL = 'http://localhost:3001/pets';
 
 class PetService {
-  
   static async getPets() {
     try {
       const response = await axios.get<Pet[]>(`${API_URL}/all`);
@@ -15,7 +15,7 @@ class PetService {
     }
   }
 
-  static async createPet(pet: Pet) {
+  static async createPet(pet: CreatePet): Promise<Pet> {
     try {
       const response = await axios.post<Pet>(`${API_URL}/create`, pet);
       return response.data;

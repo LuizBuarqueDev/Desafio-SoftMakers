@@ -5,18 +5,20 @@ import { useState } from "react";
 import { Pet } from "@/types/Pet";
 import EditPetModal from "@/components/modal/EditPetModal";
 import RemovePetModal from "@/components/modal/RemovePetModal";
+import PetService from "@/services/PetService";
 
 interface CardProps {
   pet: Pet;
 }
 
 export function Card({ pet }: CardProps) {
-  const { nome, nomeDono, telefone, animal, nascimento, raca } = pet;
+  const { id, nome, nomeDono, telefone, animal, nascimento, raca } = pet;
   
   // Estados para controlar os modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const handleRemoveClick = () => {
     setIsRemoveModalOpen(true);
     setIsModalOpen(false);
@@ -24,19 +26,30 @@ export function Card({ pet }: CardProps) {
 
   const handleCloseRemoveModal = () => setIsRemoveModalOpen(false);
 
-  const handlePetRemove = () => {
-    console.log(`Pet ${pet.nome} removido`);
-    setIsRemoveModalOpen(false);
+  // Função para remover o pet via PetService
+  const handlePetRemove = async () => {
+    try {
+      await PetService.removePet(pet.id); // Chama o método de remoção do PetService
+      console.log(`Pet ${pet.nome} removido com sucesso.`);
+      setIsRemoveModalOpen(false); // Fecha o modal de remoção
+    } catch (error) {
+      console.error('Erro ao remover pet:', error);
+    }
   };
 
   const handleEditModalOpen = () => setIsEditModalOpen(true);
 
   const handleCloseEditModal = () => setIsEditModalOpen(false);
 
-  // Função para salvar as edições
-  const handleSavePet = (editedPet: Pet) => {
-    console.log("Pet editado:", editedPet);
-    setIsEditModalOpen(false); 
+  // Função para salvar as edições do pet via PetService
+  const handleSavePet = async (editedPet: Pet) => {
+    try {
+      const updatedPet = await PetService.updatePet(editedPet.id, editedPet); // Chama o método de atualização do PetService
+      console.log("Pet editado com sucesso:", updatedPet);
+      setIsEditModalOpen(false); // Fecha o modal de edição
+    } catch (error) {
+      console.error('Erro ao editar pet:', error);
+    }
   };
 
   return (
@@ -64,8 +77,8 @@ export function Card({ pet }: CardProps) {
           onClick={() => setIsModalOpen(!isModalOpen)}
           className="ml-auto my-1"
         >
-          {/* SVG ou botão de visualização */}
-          Botao
+          {/* Botão de visualização do modal */}
+          Botão
         </button>
       </div>
 

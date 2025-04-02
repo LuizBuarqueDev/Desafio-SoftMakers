@@ -2,8 +2,9 @@ import React, { useState } from "react";
 
 type Props = {
   onClose: () => void;
-  onSave: (pet: { nome: string; nomeDono: string; telefone: string; animal: string; nascimento: string; raca: string }) => void;
+  onSave: (pet: {id:string; nome: string; nomeDono: string; telefone: string; animal: string; nascimento: string; raca: string }) => void;
   pet: {
+    id: string
     nome: string;
     nomeDono: string;
     telefone: string;
