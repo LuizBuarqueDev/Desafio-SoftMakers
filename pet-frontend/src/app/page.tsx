@@ -8,6 +8,9 @@ import { SearchBar } from "@/components/search_bar/SearchBar";
 import PetService from "@/services/PetService";
 import { Pet } from "@/types/Pet";
 import { CreatePet } from "@/types/CreatePet";
+import IconRightArrow from "@/components/icons/IconRightArrow";
+import IconLeftArrow from "@/components/icons/IconLeftArrow";
+import IconPlus from "@/components/icons/IconPlus";
 
 export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
@@ -73,6 +76,7 @@ export default function Home() {
           style={{ background: "var(--gradient_2)" }}
           onClick={() => setIsModalOpen(true)}
         >
+          <IconPlus />
           Cadastrar
         </button>
       </div>
@@ -83,13 +87,13 @@ export default function Home() {
       </div>
 
       {/* Pag */}
-      <div className="flex justify-end mt-4 w-full pr-4">
+      <div className="flex justify-end mt-4 w-full pr-4 text-[var(--light)]">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 mx-1  rounded disabled:opacity-50"
         >
-          ←
+          <IconLeftArrow />
         </button>
         <span className="px-4 py-2">
           {currentPage} de {totalPages}
@@ -97,9 +101,9 @@ export default function Home() {
         <button
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 mx-1 rounded disabled:opacity-50"
         >
-          →
+          <IconRightArrow />
         </button>
       </div>
       {isModalOpen && (
