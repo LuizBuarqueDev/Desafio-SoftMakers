@@ -9,12 +9,12 @@ type Props = {
 
 const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
   const [pet, setPet] = useState<CreatePet>({
-    nome: '',
-    nomeDono: '',
-    telefone: '',
-    animal: 'Cachorro',
-    nascimento: '',
-    raca: '',
+    nome: "",
+    nomeDono: "",
+    telefone: "",
+    animal: "Cachorro",
+    nascimento: "",
+    raca: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,31 +25,40 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
     }));
   };
 
-  const handleAnimalChange = (animal: 'Cachorro' | 'Gato') => {
+  const handleAnimalChange = (animal: "Cachorro" | "Gato") => {
     setPet((prevState) => ({
       ...prevState,
       animal,
     }));
   };
 
+  const validateDateFormat = (date: string): boolean => {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    return dateRegex.test(date);
+  };
+
   const handleSave = async () => {
+    if (!validateDateFormat(pet.nascimento)) {
+      alert("A data de nascimento deve estar no formato YYYY-MM-DD (ex: 2019-12-31)");
+      return;
+    }
+
     try {
       console.log("callBack: ", pet);
       const savedPet = await PetService.createPet(pet);
       onSave(savedPet);
     } catch (error) {
-      console.error('Erro ao salvar pet:', error);
+      console.error("Erro ao salvar pet:", error);
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
-      <div className="text-white rounded-2xl p-6 w-full max-w-md shadow-lg border border-[var(--color_2)]" style={{background: "var(--gradient_1"}}>
+      <div className="text-white rounded-2xl p-6 w-full max-w-md shadow-lg border border-[var(--color_2)]" style={{background: "var(--gradient_1)"}}>
 
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="bg-[var(--color_2)]p-3 rounded-full">
+            <div className="bg-[var(--color_2)] p-3 rounded-full">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22" />
               </svg>
@@ -59,34 +68,17 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
           <button onClick={onClose} className="text-white text-2xl">&times;</button>
         </div>
 
-        {/* Pet info */}
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm">Nome</label>
-              <input
-                name="nome"
-                value={pet.nome}
-                onChange={handleInputChange}
-                className="w-full bg-gray-800 p-2 rounded-md mt-1"
-                placeholder="Nome do Pet"
-              />
+              <input name="nome" value={pet.nome} onChange={handleInputChange} className="w-full bg-gray-800 p-2 rounded-md mt-1" placeholder="Nome do Pet" />
             </div>
             <div>
               <label className="text-sm">Animal</label>
               <div className="flex gap-2 mt-1">
-                <button
-                  onClick={() => handleAnimalChange('Cachorro')}
-                  className={`flex-1 px-2 py-1 rounded-md border ${pet.animal === 'Cachorro' ? 'bg-blue-500 text-white' : 'bg-gray-800 text-gray-400'}`}
-                >
-                  Cachorro
-                </button>
-                <button
-                  onClick={() => handleAnimalChange('Gato')}
-                  className={`flex-1 px-2 py-1 rounded-md border ${pet.animal === 'Gato' ? 'bg-blue-500 text-white' : 'bg-gray-800 text-gray-400'}`}
-                >
-                  Gato
-                </button>
+                <button onClick={() => handleAnimalChange('Cachorro')} className={`flex-1 px-2 py-1 rounded-md border ${pet.animal === 'Cachorro' ? 'bg-blue-500 text-white' : 'bg-gray-800 text-gray-400'}`}>Cachorro</button>
+                <button onClick={() => handleAnimalChange('Gato')} className={`flex-1 px-2 py-1 rounded-md border ${pet.animal === 'Gato' ? 'bg-blue-500 text-white' : 'bg-gray-800 text-gray-400'}`}>Gato</button>
               </div>
             </div>
           </div>
@@ -94,65 +86,29 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm">Dono</label>
-              <input
-                name="nomeDono"
-                value={pet.nomeDono}
-                onChange={handleInputChange}
-                className="w-full bg-gray-800 p-2 rounded-md mt-1"
-                placeholder="Nome do Dono"
-              />
+              <input name="nomeDono" value={pet.nomeDono} onChange={handleInputChange} className="w-full bg-gray-800 p-2 rounded-md mt-1" placeholder="Nome do Dono" />
             </div>
             <div>
               <label className="text-sm">Raça</label>
-              <input
-                name="raca"
-                value={pet.raca}
-                onChange={handleInputChange}
-                className="w-full bg-gray-800 p-2 rounded-md mt-1"
-                placeholder="Raça do Pet"
-              />
+              <input name="raca" value={pet.raca} onChange={handleInputChange} className="w-full bg-gray-800 p-2 rounded-md mt-1" placeholder="Raça do Pet" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm">Telefone</label>
-              <input
-                name="telefone"
-                value={pet.telefone}
-                onChange={handleInputChange}
-                className="w-full bg-gray-800 p-2 rounded-md mt-1"
-                placeholder="Telefone do Dono"
-              />
+              <input name="telefone" value={pet.telefone} onChange={handleInputChange} className="w-full bg-gray-800 p-2 rounded-md mt-1" placeholder="Telefone do Dono" />
             </div>
             <div>
               <label className="text-sm">Nascimento (Aproximado)</label>
-              <input
-                name="nascimento"
-                value={pet.nascimento}
-                onChange={handleInputChange}
-                className="w-full bg-gray-800 p-2 rounded-md mt-1"
-                placeholder="28/08/2020"
-              />
+              <input name="nascimento" value={pet.nascimento} onChange={handleInputChange} className="w-full bg-gray-800 p-2 rounded-md mt-1" placeholder="YYYY-MM-DD" />
             </div>
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-between mt-6">
-          <button
-            onClick={onClose}
-            className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold flex items-center gap-2"
-          >
-            <span>&#x21A9;</span> Voltar
-          </button>
-          <button
-            onClick={handleSave}
-            className=" text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2"
-            style={{background: "var(--gradient_2"}}
-          >
-            + Cadastrar
-          </button>
+          <button onClick={onClose} className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold">Voltar</button>
+          <button onClick={handleSave} className="text-white px-4 py-2 rounded-lg font-semibold" style={{background: "var(--gradient_2)"}}>+ Cadastrar</button>
         </div>
       </div>
     </div>
