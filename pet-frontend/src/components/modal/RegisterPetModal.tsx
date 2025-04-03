@@ -50,8 +50,7 @@ const RegisterPetModal: React.FC<Props> = ({ onClose, onSave }) => {
 
     try {
       console.log("callBack: ", pet);
-      const savedPet = await PetService.createPet(pet);
-      onSave(savedPet);
+      onSave(pet);
     } catch (error) {
       console.error("Erro ao salvar pet:", error);
     }
